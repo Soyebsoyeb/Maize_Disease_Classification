@@ -1,137 +1,96 @@
-# 🌽📊 Corn/Maize Leaf Disease Classification – Detailed Analysis Report
+Dataset 1 : /kaggle/input/corn-or-maize-leaf-disease-dataset/data
 
-This report presents an in-depth analysis of a deep learning model built to classify **corn/maize leaf diseases** using **MobileNetV2** enhanced with the **CBAM (Convolutional Block Attention Module)** 🔍🧠.
-
----
-
-## 📁 Dataset Overview
-
-**Disease Classes (4 categories):**
-- 🌿 **Blight**
-- 🍂 **Common Rust**
-- 🍁 **Gray Leaf Spot**
-- ✅ **Healthy**
-
-**Dataset Size:**
-- 🖼️ **Total Images**: 4,188  
-- 🏋️ **Training Set**: 3,348 images (80%)  
-- 🧪 **Validation Set**: 417 images (10%)  
-- 🧬 **Test Set**: 423 images (10%)  
+# 🌽 Maize Leaf Disease Classification
 
 ---
 
-## 🧠 Model Architecture
+## 📁 Dataset Info
 
-The model uses a **transfer learning** approach built on:
+- **Dataset Path**: `/kaggle/input/corn-or-maize-leaf-disease-dataset/data`
+- **Detected Classes**:
+  - 🌱 Blight
+  - 🍂 Common Rust
+  - 🍁 Gray Leaf Spot
+  - ✅ Healthy
 
-- 🔗 **Base Model**: MobileNetV2 (pretrained on ImageNet)  
-  - Input Shape: `(224, 224, 3)`  
-  - 🔒 All layers frozen during training
+### 🔄 Dataset Split:
 
-- ✨ **Attention Mechanism**: CBAM  
-  - 📊 Combines **Channel + Spatial Attention**  
-  - 🎯 Helps focus on disease-specific features
-
-- 🔚 **Classifier Head**:  
-  - 📉 Global Average Pooling  
-  - 🧱 Dense Layers: 256 ➡️ 128 (ReLU)  
-  - 🧼 Batch Normalization + 💧 Dropout (0.5)  
-  - 🟰 Final Layer: Softmax (4 output neurons)
-
----
-
-## ⚙️ Training Configuration
-
-- 🚀 **Optimizer**: Adam (LR = 0.001)  
-- 📉 **Loss Function**: Categorical Crossentropy + Label Smoothing (0.1)
-
-**Regularization:**
-- 🧲 L2 Weight Decay: 1e-4  
-- 💧 Dropout: 0.5
-
-**Data Augmentation:**
-- 🔄 Rotation (±30°)  
-- ↔️ Horizontal & Vertical Flip  
-- ☀️ Brightness Adjustment (0.8–1.2)  
-- 🔍 Zoom (±20%)
-
-**Callbacks:**
-- 🛑 Early Stopping (patience = 5)  
-- 📉 Reduce LR on Plateau (factor = 0.5, patience = 2, min_lr = 1e-6)
+| Split       | Percentage |
+|-------------|------------|
+| 🏋️‍♂️ Training   | 80%        |
+| 🧪 Validation | 10%        |
+| 🧾 Test       | 10%        |
 
 ---
 
-## 📈 Training Performance
+## 🤖 Project Objective
 
-- ⏳ Trained for **38 epochs** before early stopping
-- ✅ **Final Training Accuracy**: 99.31%  
-- 🧪 **Final Validation Accuracy**: 96.16%
+This program classifies maize leaf images into the above four categories using:
 
-### 🔍 Observations:
-- ⚡ Rapid performance gain in early epochs  
-- 🔽 Learning rate reduced **4 times** during training  
-- 💪 No overfitting: training and validation curves stayed close
+- 📷 **CNN with MobileNetV2**
+- 🧠 **CBAM (Convolutional Block Attention Module)** for better feature attention
+- 💡 **Support Vector Machine (SVM)** on extracted features to enhance classification performance
 
 ---
 
-## 🧪 Test Set Evaluation
+## 🧠 CBAM Attention Module
 
-- ✅ **Test Accuracy**: 97.16%  
-- 📉 **Test Loss**: 0.4809  
+CBAM helps the network **focus on important regions** of the image.
 
-**Weighted Averages:**
-- 🎯 Precision: 0.9714  
-- 🔁 Recall: 0.9716  
-- 🧠 F1-Score: 0.9715
+### 📌 Structure:
 
----
+- 🔴 **Channel Attention**:  
+  `GlobalAvgPool + GlobalMaxPool → MLP → Add + Sigmoid`
 
-## 📊 Per-Class Performance
+- 🔵 **Spatial Attention**:  
+  `Channel-wise mean/max → Concat → Conv2D → Sigmoid`
 
-| 🌿 Class           | 🎯 Precision | 🔁 Recall | 🧠 F1-Score | 📊 Support |
-|--------------------|--------------|------------|-------------|------------|
-| **Blight**         | 0.95         | 0.95       | 0.95        | 116        |
-| **Common Rust**    | 0.99         | 1.00       | 1.00        | 132        |
-| **Gray Leaf Spot** | 0.91         | 0.90       | 0.90        | 58         |
-| **Healthy**        | 1.00         | 1.00       | 1.00        | 117        |
+> ✅ This is implemented in the function `cbam_block(input_feature)`
 
 ---
 
-## 🔍 Confusion Matrix Insights
 
-- ✅ **Healthy** and **Common Rust**: **Near-perfect** predictions  
-- 🟡 **Gray Leaf Spot**: Slight dip in recall (~90%)  
-- 🔁 **Blight vs. Gray Leaf Spot**: Some misclassification (likely visual similarity)  
-- ⚖️ **Blight**: Balanced precision & recall (95%)
+🧬 Full Architecture:
 
----
+Input → MobileNetV2 → CBAM → GAP → Dense(256) → BN → Dropout(0.5)
+                                       ↓
+                              Dense(128) → BN → Dropout(0.5)
+                                       ↓
+                                 Dense(4, softmax)
 
-## ✅ Key Strengths
 
-- 🌟 **High Accuracy**: 97.16% on test set  
-- 🧠 **Efficient Architecture**: MobileNetV2 + CBAM delivers compact yet effective performance  
-- 🔒 **Strong Regularization**: Dropout & L2 prevent overfitting  
-- ⚖️ **Balanced Class Performance**
 
----
+🏋️‍♂️ Training Results
+Metric	Value
+🎯 Accuracy	97.16%
+📉 Final Loss	0.4247
+⏱️ Epochs	~41
 
-## 🛠️ Potential Improvements
+📈 Training Graph: Accuracy and loss plotted across epochs.
 
-- ⚠️ **Class Imbalance**: Gray Leaf Spot has fewer samples — consider oversampling or class weights  
-- 🔄 **Advanced Augmentation**: Add blur, mildew-like noise, or other domain-specific transforms  
-- 🔓 **Fine-tuning**: Gradually unfreeze MobileNetV2 layers to enhance learning  
-- 🎯 **Per-Class Thresholding**: Tune decision thresholds for optimal precision/recall
 
----
+📊 Evaluation (CNN Output)
 
-## 🧾 Conclusion
+          precision    recall  f1-score   support
+Blight            0.96      0.93      0.95       116
+Common_Rust       1.00      1.00      1.00       132
+Gray_Leaf_Spot    0.87      0.93      0.90        58
+Healthy           1.00      1.00      1.00       117
+Weighted Avg      0.97      0.97      0.97       423
+📊 Confusion Matrix: Displayed using Seaborn heatmap.
 
-This model achieves **state-of-the-art results** 🚀 for **corn/maize leaf disease classification** using a lightweight yet powerful combination of **MobileNetV2 + CBAM** 🧠.
 
-- 📷 CBAM guides attention to **relevant disease regions**
-- ✅ Highly accurate and generalizes well across leaf types
-- 📱 Ready for **real-world deployment** in smart farming or mobile plant diagnostic apps
+✅ Final Summary
+🔍 Component	🔢 Result/Value
+🎯 Deep Model Accuracy	97.16%
+🧠 SVM Accuracy	98.11%
+🧩 Base Architecture	MobileNetV2 + CBAM
+📐 Feature Dimension	128
+🏋️ Training Images	3348
+🧾 Test Images	423
+🏆 Best Classifier	SVM on features
+❌ Misclassifications	Minimal (mostly in Gray Leaf Spot)
 
----
 
-> 🌟 This intelligent system empowers farmers to detect diseases early, enhance crop yield, and secure agricultural health — **one leaf at a time**! 🌿📱
+
+
