@@ -1,0 +1,14 @@
+A Lightweight Attention-Enhanced CNN-SVM Hybrid Approach for Maize Leaf Disease Classification:
+
+MD Soyeb Hoque1, Gunjan Basak1, Dipan Deb1, Nikhil Sah1, Arghyasree Saha1 [0009-0006-5879-6445] and Pawan Kumar Singh1,* [0000-0002-9598-7981]
+1 Department of Information Technology, Jadavpur University, Salt Lake Campus, Kolkata-700106, India
+
+{hoquesoyeb9@gmail.com, gunjanbasak007@gmail.com, deb.dipan2004@gmail.com, nikhil.jadavpur@gmail.com, arghyasree07@gmail.com, pawansingh.ju@gmail.com}
+*Corresponding author:  Pawan Kumar Singh {pawansingh.ju@gmail.com}
+
+Maize productivity is threatened by leaf diseases such as curvularia leaf spot, small spot, and rust, making early detection essential. Manual diagnosis is labor-intensive and error-prone, 
+while many deep learning (DL) models are computationally demanding for practical deployment. This study introduces a lightweight, attention-enhanced hybrid framework that combines 
+MobileNetV2 with a Convolutional Block Attention Module (CBAM) for discriminative feature extraction along with a Support Vector Machine (SVM) for robust disease classification.
+Extensive experiments on two benchmark datasets demonstrate classification accuracies of 98.11% and 99.44%. In addition, a comprehensive ablation study is performed to analyze 
+the impact of attention mechanism and hybrid learning, confirming their effectiveness in improving performance and generalization. Overall, the results highlight the proposed framework’s 
+efficiency and suitability for real-world agricultural applications. 
